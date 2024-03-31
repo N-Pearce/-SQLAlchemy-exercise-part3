@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Post Details
+{% endblock%}
+
+{% block content %}
+
+<h1>{{post.title}}</h1>
+<p>{{post.content}}</p>
+
+<div style="display: flex;">
+    <form action="/posts/{{post.id}}/edit" style="margin-right: 10px;">
+        <button>Edit</button>
+    </form>
+
+    <form action="/posts/{{post.id}}/delete/{{post.user_id}}">
+        <button>Delete</button>
+    </form>
+</div>
+<p>By {{user.first_name}} {{user.last_name}} on {{post.created_at}}</p>
+
+<form action="/users/{{user.id}}">
+    <button>Back</button>
+</form>
+{% endblock %}
