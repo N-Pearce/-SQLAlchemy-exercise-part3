@@ -39,6 +39,42 @@ class Post(db.Model):
     created_at = db.Column(db.DateTime(timezone=True),
                            server_default=func.now())
     user_id = db.Column(db.Integer,
-                        db.ForeignKey('users.id', ondelete='CASCADE'))
+                        db.ForeignKey('users.id', ondelete='CASCADE'),
+                        nullable=False)
     
     user = db.relationship('User', backref='posts')
+    
+    tags = db.relationship('Tag',
+                            cascade='all,delete',
+                            secondary="posts_tags",
+                            backref='tags')
+    
+    # def __repr__(self):
+    #     return f"{self.id} {self.title} user: {self.user_id}"
+
+class PostTag(db.Model):
+    __tablename__ = 'posts_tags'
+
+    post_id = db.Column(db.Integer,
+                        db.ForeignKey('posts.id'),
+                        nullable=False)
+    tag_id = db.Column(db.Integer,
+                        db.ForeignKey('tags.id'),
+                        nullable=False)
+    id_combo = db.PrimaryKeyConstraint(post_id, tag_id)
+
+class Tag(db.Model):
+    __tablename__ = 'tags'
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    name = db.Column(db.Text,
+                     unique=True)
+    
+    posts = db.relationship('Post',
+                            cascade='all,delete',
+                            secondary="posts_tags",
+                            backref='posts')
+    # posts_tags = db.relationship('PostTag',
+    #                              backref='PostTag')

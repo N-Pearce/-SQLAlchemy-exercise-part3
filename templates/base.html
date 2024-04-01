@@ -6,6 +6,11 @@
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
+    <header style="display: flex;">
+        <form action="/users"><button>Users</button></form>
+        <form action="/posts"><button>Posts</button></form>
+        <form action="/tags"><button>Tags</button></form>
+    </header>
     {% block content %}
     {% endblock %}
 </body>
