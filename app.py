@@ -164,6 +164,11 @@ def show_all_tags():
     tags = Tag.query.order_by(Tag.name).all()
     return render_template('tags/show.html', tags=tags)
 
+@app.route('/tags/<int:tag_id>')
+def show_tag(tag_id):
+    tag = Tag.query.get_or_404(tag_id)
+    return render_template('tags/details.html', tag=tag)
+
 @app.route('/tags/new')
 def show_new_tag_form():
     return render_template('tags/new.html')
@@ -176,13 +181,6 @@ def add_tag():
     db.session.add(new_tag)
     db.session.commit()
     return redirect('/tags')
-
-@app.route('/tags/<int:tag_id>')
-def show_tag(tag_id):
-    tag = Tag.query.get_or_404(tag_id)
-    return render_template('tags/details.html', tag=tag)
-
-### TAGS
 
 @app.route('/tags/<int:tag_id>/edit')
 def edit_tag_screen(tag_id):
